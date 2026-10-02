@@ -1,19 +1,19 @@
 name: Security CI Checks
 
-on: 
+on:
   push:
     branches:
-    - main
+      - main
 
 jobs:
-  sast_scan: 
+  sast_scan:
     name: Run Static Code Scan
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@v0.36.0 #!!!
+        uses: aquasecurity/trivy-action@v0.36.0
         env:
           TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db:2
         with:
@@ -22,8 +22,3 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL'
-          name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: trivy-results
-          path: trivy-results.sarif
